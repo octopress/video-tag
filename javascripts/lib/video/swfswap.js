@@ -1,4 +1,5 @@
-$(document).ready(function() {
-  swap = require('video/swffallback');
+$(window).on('load',function() {
+  swap = require('video/swfvideoswap');
   swap();
 });
+

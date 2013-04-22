@@ -15,4 +15,4 @@ source:
     destination: 'assets/video/'
 
 documentation: 'docs/index.md'
-tests: 'test/index.md'
+tests: 'tests/index.md'
