@@ -1,4 +1,4 @@
-swfSwap = (path = "/assets/jwplayer/") ->
+swfSwap = (path = "/assets/video-tag/") ->
   player = path+"player.swf"
   skin = path+"glow/glow.xml"
   videos = $('video')
@@ -21,7 +21,7 @@ swapVideo = (video, mp4, player, skin) ->
   id = 'video_'+Math.round(1 + Math.random()*(100000))
   width = parseInt(video.attr('width'), 10) or video.width()
   height = parseInt(video.attr('height'), 10) or video.height()
-  swfobject = require 'video/swfobject'
+  swfobject = require 'video-tag/swfobject'
   ratio = (height/width*100)+'%'
   
   video.after '<div class="flash-video"><div style="padding: 29px 0 '+ratio+';" class="swfobject"><div id='+id+'>'

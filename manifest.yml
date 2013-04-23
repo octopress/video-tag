@@ -11,8 +11,8 @@ javascripts:
 plugins: 'plugins/video_tag.rb'
 source:      
   - 
-    path:        'source/video/'
-    destination: 'assets/video/'
+    path:        'source/video-tag/'
+    destination: 'assets/video-tag/'
 
 documentation: 'docs/index.md'
 tests: 'tests/index.md'
