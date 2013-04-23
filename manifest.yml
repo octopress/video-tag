@@ -1,18 +1,10 @@
-name: "HTML5 Video tag for Octopress"
+name: "Video tag for Octopress"
+slug: "video-tag"
 author: "Brandon Mathis"
-description: "Provides a liquid tag for easily writing HTML5 tags for video. Supports mp4, ogv, webm and falls back to Flash."
+description: "Provides a liquid tag for easily writing HTML5 video tags. Supports mp4, ogv, webm and falls back to Flash."
 url: "https://github.com/octopress/video-tag"
-version: 1.0
 
-javascripts: 
-  lib:       'javascripts/lib/'
-  modules:   'javascripts/modules/'
-
-plugins: 'plugins/video_tag.rb'
 source:      
   - 
     path:        'source/video-tag/'
     destination: 'assets/video-tag/'
-
-documentation: 'docs/index.md'
-tests: 'tests/index.md'
