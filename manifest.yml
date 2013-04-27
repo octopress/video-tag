@@ -7,4 +7,4 @@ url: "https://github.com/octopress/video-tag"
 source:      
   - 
     path:        'source/video-tag/'
-    destination: 'assets/video-tag/'
+    destination: 'video-tag/'
