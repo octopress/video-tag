@@ -1,6 +1,5 @@
-swfSwap = (path = "/assets/video-tag/") ->
-  player = path+"player.swf"
-  skin = path+"glow/glow.xml"
+swfSwap = (path = "/video-tag/") ->
+  player = path+"flowplayer-3.2.16.swf"
   videos = $('video')
 
   if videos.length
@@ -14,22 +13,22 @@ swfSwap = (path = "/assets/video-tag/") ->
 
       supported = Modernizr.video and (Modernizr.video.h264 or (Modernizr.video.webm and webm?) or (Modernizr.video.ogv and ogv?))
       supported = false if window.location.hash.match(/flash-test/)?
-      swapVideo(video, $(mp4).attr('src'), player, skin) unless supported
+      swapVideo(video, $(mp4).attr('src'), player) unless supported
 
 
-swapVideo = (video, mp4, player, skin) ->
+swapVideo = (video, mp4, player) ->
   id = 'video_'+Math.round(1 + Math.random()*(100000))
   width = parseInt(video.attr('width'), 10) or video.width()
   height = parseInt(video.attr('height'), 10) or video.height()
-  swfobject = require 'video-tag/swfobject'
+  swfobject = require 'video/swfobject'
   ratio = (height/width*100)+'%'
   
   video.after '<div class="flash-video"><div style="padding: 29px 0 '+ratio+';" class="swfobject"><div id='+id+'>'
 
   swfobject.embedSWF(
-    player, id, width, height, "9.0.0",
-    { file : mp4, image : video.attr('poster'), skin : skin },
-    { movie : mp4, wmode : "opaque", allowfullscreen : "true" }
+    player, id, width, height, "10.0.0",
+    { config : '{ "playerID":"'+id+'", "clip": { "url":"'+mp4+'", "autoPlay":false }}'},
+    { bgcolor: "#000000", wmode : "opaque", allowfullscreen : "true", allowscriptaccess: "always", quality: "high" }
   )
   video.remove()
 
