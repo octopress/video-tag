@@ -3,8 +3,4 @@ slug: "video-tag"
 author: "Brandon Mathis"
 description: "Provides a liquid tag for easily writing HTML5 video tags. Supports mp4, ogv, webm and falls back to Flash."
 url: "https://github.com/octopress/video-tag"
-
-source:      
-  - 
-    path:        'source/video-tag/'
-    destination: 'video-tag/'
+type: plugin
