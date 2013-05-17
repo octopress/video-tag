@@ -2,8 +2,7 @@
 # Author: Brandon Mathis http://brandonmathis.com
 # Description: Easily write HTML5 video (mp4,webm,ogv) with a flash backup.
 
-module Jekyll
-
+module Octopress
   class VideoTag < Liquid::Tag
     @video   = nil
     @poster  = ''
@@ -58,5 +57,5 @@ module Jekyll
   end
 end
 
-Liquid::Template.register_tag('video', Jekyll::VideoTag)
+Liquid::Template.register_tag('video', Octopress::VideoTag)
 
