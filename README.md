@@ -72,8 +72,6 @@ This would output the following HTML
 </video>
 ```
 
-## Demo
-
 <video controls poster='http://s3.imathis.com/video/clouds.jpg' width='' height='' preload='metadata' onclick='(function(el){ if(el.paused) el.play(); else el.pause() })(this)'>
   <source src='http://s3.imathis.com/video/clouds.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
   <source src='http://s3.imathis.com/video/clouds.webm' type='video/webm; codecs="vp8, vorbis"'>
