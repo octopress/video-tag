@@ -59,7 +59,7 @@ Each video is embedded with a minuscule bit of javascript which plays videos whe
 This would output the following HTML
 
 ```html
-<video controls poster='' width='' height='' preload='metadata'>
+<video controls poster='' width='' height='' preload='metadata'
   onclick='(function(el){ if(el.paused) el.play(); else el.pause() })(this)'>
   <source src='/videos/clouds.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 </video>
