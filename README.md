@@ -56,16 +56,15 @@ Each video is embedded with a minuscule bit of javascript which plays videos whe
 ## Examples:
 
 ```
-{% video /videos/clouds.mp4 %}
+{% video {{ site.cdn }}/videos/clouds.mp4 %}
 {% video featured wide /images/clouds.jpg /videos/clouds.mp4 /videos/clouds.webm /videos/clouds.ogv 1080px 608px preload:auto %}
 ```
 
 This would output the following HTML
 
 ```html
-<video controls poster='' width='' height='' preload='metadata'
-  onclick='(function(el){ if(el.paused) el.play(); else el.pause() })(this)'>
-  <source src='/videos/clouds.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+<video controls preload='metadata' onclick='(function(el){ if(el.paused) el.play(); else el.pause() })(this)'>
+  <source src='https://cdn.com/video/clouds.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 </video>
 
 <video class='featured wide' controls poster='/images/clouds.jpg' width='1080px' height='608px' preload='auto'

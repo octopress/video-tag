@@ -11,54 +11,77 @@ module Octopress
         Preload  = /(:?preload: *(:?\S+))/i
         Size     = /\s(auto|\d\S+)\s?(auto|\d\S+)?/i
         URLs     = /((https?:\/)?\/\S+)/i
+        Types    = {
+          '.mp4' => "type='video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"'",
+          '.ogv' => "type='video/ogg; codecs=\"theora, vorbis\"'",
+          '.webm' => "type='video/webm; codecs=\"vp8, vorbis\"'"
+        }
 
         def initialize(tag_name, tag_markup, tokens)
           @markup = tag_markup
-          markup = tag_markup.dup
-
-          @preload = markup.scan(Preload).flatten.compact.last || "metadata"
-          markup.sub!(Preload, '')
-
-          @sizes = markup.scan(Size).flatten.compact
-          markup.sub!(Size, '')
-
-          urls = markup.scan(URLs).map{ |m| m.first }
-          @videos = urls.select {|u| u.match /mp4|ogv|webm/i}
-          @poster = urls.select {|u| u.match /jpe?g|png|gif/i}.first
-          markup.gsub!(URLs, '')
-
-          if !(@classes = markup.strip).empty?
-            @classes = "class='#{@classes}' "
-          end
-
           super
         end
 
         def render(context)
+          @markup = process_liquid(context)
 
-          output = super
-          type = {
-            'mp4' => "type='video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"'",
-            'ogv' => "type='video/ogg; codecs=\"theora, vorbis\"'",
-            'webm' => "type='video/webm; codecs=\"vp8, vorbis\"'"
-          }
-
-          if context.environments.first['site']['click_to_play_video'] != false
-            clickToPlay = "onclick='(function(el){ if(el.paused) el.play(); else el.pause() })(this)'"
-          else
-            clickToPlay = ''
-          end
-
-          if @videos && @videos.size > 0
-            video =  "<video #{@classes}controls poster='#{@poster}' width='#{@sizes[0]}' height='#{@sizes[1]}' preload='#{@preload}' #{clickToPlay}>"
-            @videos.each do |v|
-              t = v.match(/([^\.]+)$/)[1]
-              video += "<source src='#{v}' #{type[t]}>"
-            end
+          if sources.size > 0
+            video =  "<video #{classes} controls #{poster} #{sizes} #{preload} #{click_to_play(context)}>"
+            video += sources
             video += "</video>"
           else
             raise "No video mp4, ogv, or webm urls found in {% video #{@markup} %}"
           end
+        end
+
+        def click_to_play(context)
+          if context.environments.first['site']['click_to_play_video'] != false
+            "onclick='(function(el){ if(el.paused) el.play(); else el.pause() })(this)'"
+          end
+        end
+
+        def sources
+          @sources ||= begin 
+            vids = urls.select {|u| u.match /mp4|ogv|webm/i}
+
+            vids.collect do |v|
+              "<source src='#{v}' #{Types[File.extname(v)]}>"
+            end.join('')
+          end
+        end
+
+        def poster
+          p = urls.select {|u| u.match /jpe?g|png|gif/i}.first
+          "poster='#{p}'" if p
+        end
+
+        def urls
+          @markup.scan(URLs).map{ |m| m.first }
+        end
+
+        def sizes
+          s = @markup.scan(Size).flatten.compact
+          attrs = "width='#{s[0]}'" if s[0]
+          attrs += "height='#{s[1]}'" if s[1]
+          attrs
+        end
+
+        def preload
+          if p = @markup.scan(Preload).flatten.compact.last || "metadata"
+            "preload='#{p}'"
+          end
+        end
+
+        def classes
+          leftovers = @markup.sub(Preload, '').sub(Size, '').gsub(URLs, '')
+
+          if !(classes = leftovers.strip).empty?
+            "class='#{classes}'"
+          end
+        end
+
+        def process_liquid(context)
+          Liquid::Template.parse(@markup).render!(context.environments.first)
         end
       end
     end
