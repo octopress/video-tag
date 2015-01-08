@@ -66,3 +66,16 @@ module Octopress
 end
 
 Liquid::Template.register_tag('video', Octopress::Tags::VideoTag::Tag)
+
+
+if defined? Octopress::Docs
+  Octopress::Docs.add({
+    name:        "Octopress Video Tag",
+    gem:         "octopress-video-tag",
+    version:     Octopress::Tags::VideoTag::VERSION,
+    description: "Easy HTML5 video tags for Jekyll sites",
+    path:        File.expand_path(File.join(File.dirname(__FILE__), "../")),
+    source_url:  "https://github.com/octopress/video-tag",
+  })
+end
+
