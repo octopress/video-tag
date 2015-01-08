@@ -3,3 +3,4 @@ test/.git
 tests/public
 _site
 pkg
+Gemfile.lock
