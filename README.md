@@ -2,6 +2,10 @@
 
 Easy HTML5 video tags for Jekyll sites.
 
+[![Build Status](http://img.shields.io/travis/octopress/video-tag.svg)](https://travis-ci.org/octopress/video-tag)
+[![Gem Version](http://img.shields.io/gem/v/octopress-video-tag.svg)](https://rubygems.org/gems/octopress-video-tag)
+[![License](http://img.shields.io/:license-mit-blue.svg)](http://octopress.mit-license.org)
+
 ## Installation
 
 ### Using Bundler
