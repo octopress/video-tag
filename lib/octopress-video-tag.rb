@@ -61,7 +61,7 @@ module Octopress
 
         def sizes
           s = @markup.scan(Size).flatten.compact
-          attrs = "width='#{s[0]}'" if s[0]
+          attrs = "width='#{s[0]}' " if s[0]
           attrs += "height='#{s[1]}'" if s[1]
           attrs
         end
