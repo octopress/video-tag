@@ -9,8 +9,9 @@ module Octopress
         @height  = ''
         @width   = ''
         Preload  = /(:?preload: *(:?\S+))/i
-        Size     = /\s(auto|\d\S+)\s?(auto|\d\S+)?/i
-        URLs     = /((https?:\/)?\/\S+)/i
+        Sizes    = /\s(auto|\d\S+)/i
+        Poster   = /((https?:\/\/|\/)\S+\.(png|gif|jpe?g)\S*)/i
+        Videos   = /((https?:\/\/|\/)\S+\.(webm|ogv|mp4)\S*)/i
         Types    = {
           '.mp4' => "type='video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"'",
           '.ogv' => "type='video/ogg; codecs=\"theora, vorbis\"'",
@@ -27,8 +28,8 @@ module Octopress
 
           if sources.size > 0
             video =  "<video #{classes} controls #{poster} #{sizes} #{preload} #{click_to_play(context)}>"
-            video += sources
-            video += "</video>"
+            video << sources
+            video << "</video>"
           else
             raise "No video mp4, ogv, or webm urls found in {% video #{@markup} %}"
           end
@@ -41,41 +42,33 @@ module Octopress
         end
 
         def sources
-          @sources ||= begin 
-            vids = urls.select {|u| u.match /mp4|ogv|webm/i}
-
-            vids.collect do |v|
-              "<source src='#{v}' #{Types[File.extname(v)]}>"
-            end.join('')
-          end
+          @markup.scan(Videos).map(&:first).compact.map do |v|
+            "<source src='#{v}' #{Types[File.extname(v)]}>"
+          end.join('')
         end
 
         def poster
-          p = urls.select {|u| u.match /jpe?g|png|gif/i}.first
+          p = @markup.scan(Poster).map(&:first).compact.first
           "poster='#{p}'" if p
         end
 
-        def urls
-          @markup.scan(URLs).map{ |m| m.first }
-        end
-
         def sizes
-          s = @markup.scan(Size).flatten.compact
+          s = @markup.scan(Sizes).map(&:first).compact
           attrs = "width='#{s[0]}'" if s[0]
           attrs += " height='#{s[1]}'" if s[1]
           attrs
         end
 
         def preload
-          if p = @markup.scan(Preload).flatten.compact.last || "metadata"
+          if p = @markup.scan(Preload).flatten.last || "metadata"
             "preload='#{p}'"
           end
         end
 
         def classes
-          leftovers = @markup.sub(Preload, '').sub(Size, '').gsub(URLs, '')
+          classes = @markup.sub(Preload, '').gsub(Videos, '').sub(Poster, '').gsub(Sizes,'').strip
 
-          if !(classes = leftovers.strip).empty?
+          if !classes.empty?
             "class='#{classes}'"
           end
         end
