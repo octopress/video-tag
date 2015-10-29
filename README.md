@@ -53,11 +53,20 @@ This plugin defaults to preloading `metadata`. This uses minimal bandwidth while
 
 Each video is embedded with a minuscule bit of javascript which plays videos when they are clicked. If you'd prefer to disable this feature, set `click_to_play_video: false` in your site's configuration.
 
+### Video Tag Attributes
+
+These attributes can be added:
+
+- `autoplay`
+- `muted`
+- `loop`
+- `nocontrols` - Removes the default `controls` attribute.
+
 ## Examples:
 
 ```
 {% video {{ site.cdn }}/videos/clouds.mp4 %}
-{% video featured wide /images/clouds.jpg /videos/clouds.mp4 /videos/clouds.webm /videos/clouds.ogv 1080px 608px preload:auto %}
+{% video autoplay featured wide /images/clouds.jpg /videos/clouds.mp4 /videos/clouds.webm /videos/clouds.ogv 1080px 608px preload:auto %}
 ```
 
 This would output the following HTML
@@ -67,7 +76,7 @@ This would output the following HTML
   <source src='https://cdn.com/video/clouds.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 </video>
 
-<video class='featured wide' controls poster='/images/clouds.jpg' width='1080px' height='608px' preload='auto'
+<video controls autoplay class='featured wide' poster='/images/clouds.jpg' width='1080px' height='608px' preload='auto'
   onclick='(function(el){ if(el.paused) el.play(); else el.pause() })(this)'>
   <source src='/videos/clouds.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
   <source src='/videos/clouds.webm' type='video/webm; codecs="vp8, vorbis"'>
