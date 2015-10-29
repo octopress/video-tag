@@ -9,9 +9,10 @@ module Octopress
         @height  = ''
         @width   = ''
         Preload  = /(:?preload: *(:?\S+))/i
-        Sizes    = /\s(auto|\d\S+)/i
+        Sizes    = /\s(auto|\d\S+)\s/i
         Poster   = /((https?:\/\/|\/)\S+\.(png|gif|jpe?g)\S*)/i
         Videos   = /((https?:\/\/|\/)\S+\.(webm|ogv|mp4)\S*)/i
+        Attrs    = /(loop|nocontrols|autoplay|muted)/i
         Types    = {
           '.mp4' => "type='video/mp4; codecs=\"avc1.42E01E, mp4a.40.2\"'",
           '.ogv' => "type='video/ogg; codecs=\"theora, vorbis\"'",
@@ -27,7 +28,7 @@ module Octopress
           @markup = process_liquid(context)
 
           if sources.size > 0
-            video =  "<video #{classes} controls #{poster} #{sizes} #{preload} #{click_to_play(context)}>"
+            video =  "<video #{attributes} #{classes} #{poster} #{sizes} #{preload} #{click_to_play(context)}>"
             video << sources
             video << "</video>"
           else
@@ -66,10 +67,28 @@ module Octopress
         end
 
         def classes
-          classes = @markup.sub(Preload, '').gsub(Videos, '').sub(Poster, '').gsub(Sizes,'').strip
+          classes = @markup.sub(Preload, '').gsub(Videos, '').sub(Poster, '').gsub(Attrs,'').gsub(Sizes, '').strip
 
           if !classes.empty?
             "class='#{classes}'"
+          end
+        end
+
+        def attributes
+          attrs = @markup.gsub(Videos, '').sub(Poster, '').strip
+
+          # Only keep valid attributes
+          attrs = attrs.split(" ").select { |e| Attrs =~ e }
+
+          # Add controls attribute if nocontrols doesn't exist
+          unless attrs.delete("nocontrols") != nil
+            attrs.push "controls"
+          end
+
+          attrs = attrs.join(" ")
+
+          if !attrs.empty?
+            "#{attrs}"
           end
         end
 
